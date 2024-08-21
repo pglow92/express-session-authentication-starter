@@ -1,0 +1,25 @@
+image: node:buster
+
+tasks:
+    - name: run back-end
+      openMode: split-left
+      command: |
+        npm i
+        npm run dev
+
+    - name: run front-end
+      openMode: split-right
+      command: |
+        cd frontend 
+        npm i
+        echo "REACT_APP_API_URL=$(gp url 5555)" > .env
+        npm run dev
+
+ports:
+    - name: frontend
+      port: 5173
+      onOpen: open-browser
+    - name: backend
+      port: 3000
+      onOpen: ignore
+      visibility: public
